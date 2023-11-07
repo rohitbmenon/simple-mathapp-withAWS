@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Math AWS Web Application by Rohit!</title>
+    <!-- Styling for the client UI -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #E0C992;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column; /* Center items vertically */
+        }
+
+        h1 {
+            color: #6C543B;
+            font-family: 'Georgia', serif;
+            font-size: 36px;
+            text-align: center;
+        }
+
+        label {
+            color: #8B635C;
+            font-family: 'Georgia', serif;
+            font-size: 24px;
+        }
+
+        .input-section {
+            text-align: center; /* Center the input section horizontally */
+        }
+
+        button {
+            background-color: #8B635C;
+            border: none;
+            color: #FFFFFF;
+            font-family: 'Georgia', serif;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 25px; /* Apply rounded corners */
+        }
+
+        input {
+            color: #6C543B;
+            font-family: 'Georgia', serif;
+            font-size: 24px;
+            padding: 10px;
+        }
+    </style>
+    <script>
+        // callAPI function that takes the base and exponent numbers as parameters
+        var callAPI = (base,exponent)=>{
+            // instantiate a headers object
+            var myHeaders = new Headers();
+            // add content type header to object
+            myHeaders.append("Content-Type", "application/json");
+            // using built in JSON utility package turn object to string and store in a variable
+            var raw = JSON.stringify({"base":base,"exponent":exponent});
+            // create a JSON object with parameters for API call and store in a variable
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+            // make API call with parameters and use promises to get response
+            fetch("https://rm9a73wub1.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
+            .then(response => response.text())
+            .then(result => alert(JSON.parse(result).body))
+            .catch(error => console.log('error', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome to AWS Python Math! Enter some numbers!</h1>
+	<form>
+        <label>The Base Number:</label>
+        <input type="text" id="base">
+        <label>To the power of! : </label>
+        <input type="text" id="exponent">
+        <!-- set button onClick method to call function we defined passing input values as parameters -->
+        <button type="button" onclick="callAPI(document.getElementById('base').value,document.getElementById('exponent').value)">CALCULATE</button>
+    </form>
+</body>
+</html>
